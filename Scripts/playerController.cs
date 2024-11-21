@@ -3,35 +3,39 @@ public class playerController : MonoBehaviour
 {
     public float speed = 7.0f;
     public float mouseSensitivity = 100.0f;
-    public float rotationSpeed = 4.0f; //ë§ˆìš°ìŠ¤ íšŒì „ ì†ë„
+    public float rotationSpeed = 4.0f; //¸¶¿ì½º È¸Àü ¼Óµµ
 
     private CharacterController controller;
 
-    private float xRotation = 0.0f; //ì¹´ë©”ë¼ ìƒí•˜ íšŒì „ ê°ë„
+    private float xRotation = 0.0f; //Ä«¸Ş¶ó »óÇÏ È¸Àü °¢µµ
 
-    public Transform playerCamera; //ë©”ì¸ ì¹´ë©”ë¼
+    public Transform playerCamera; //¸ŞÀÎ Ä«¸Ş¶ó
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
 
-        //Cursor.lockState = CursorLockMode.Locked; //ë§ˆìš°ìŠ¤ ì»¤ì„œ í‘œì‹œ X
+        //Cursor.lockState = CursorLockMode.Locked; //¸¶¿ì½º Ä¿¼­ Ç¥½Ã X
     }
 
     void Update()
     {
-        //í”Œë ˆì´ì–´ ì´ë™
+        if (GameManager.gm.gState != GameManager.GameState.Run)
+        {
+            return;
+        }
+        //ÇÃ·¹ÀÌ¾î ÀÌµ¿
         MovePlayer();
 
-        //ì¹´ë©”ë¼ íšŒì „ ì²˜ë¦¬
+        //Ä«¸Ş¶ó È¸Àü Ã³¸®
         MouseLook();
     }
 
     void MovePlayer()
     {
-        //ì´ë™ ì…ë ¥ ë°›ê¸°
-        float moveX = Input.GetAxis("Horizontal"); // A, D ë˜ëŠ” ì¢Œìš° ë°©í–¥í‚¤
-        float moveZ = Input.GetAxis("Vertical");   // W, S ë˜ëŠ” ìƒí•˜ ë°©í–¥í‚¤
+        //ÀÌµ¿ ÀÔ·Â ¹Ş±â
+        float moveX = Input.GetAxis("Horizontal"); // A, D ¶Ç´Â ÁÂ¿ì ¹æÇâÅ°
+        float moveZ = Input.GetAxis("Vertical");   // W, S ¶Ç´Â »óÇÏ ¹æÇâÅ°
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         controller.Move(move * speed * Time.deltaTime);
@@ -39,17 +43,17 @@ public class playerController : MonoBehaviour
 
     void MouseLook()
     {
-        // ë§ˆìš°ìŠ¤ ì…ë ¥
+        // ¸¶¿ì½º ÀÔ·Â
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);  //ìƒí•˜ 90ë„ ê°ë„ë¡œ ì œí•œ
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);  //»óÇÏ 90µµ °¢µµ·Î Á¦ÇÑ
 
-        // ì¹´ë©”ë¼ ìƒí•˜ íšŒì „
+        // Ä«¸Ş¶ó »óÇÏ È¸Àü
         playerCamera.localRotation = Quaternion.Euler(xRotation * 2.0f, 0f, 0f);
 
-        // í”Œë ˆì´ì–´ ì¢Œìš° íšŒì „
+        // ÇÃ·¹ÀÌ¾î ÁÂ¿ì È¸Àü
         transform.Rotate(Vector3.up * mouseX * rotationSpeed);
     }
 }
