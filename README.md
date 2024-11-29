@@ -1,2 +1,2 @@
 # OpenSource_Unistd
-OpenSource Project Reppository for Team. Unistd
+OpenSource Project Repository for Team. Unistd
